@@ -1,0 +1,189 @@
+# ==========================================================
+#  SZAMAN - konfiguracja
+#  Kolory: &a, &c... oraz hex &#RRGGBB
+#  Po zmianach: /szamanadmin reload
+# ==========================================================
+
+# ---------- Smoczy Odlamek (waluta w menu) ----------
+# Plugin rozpoznaje item po materiale + (opcjonalnie) nazwie i CustomModelData.
+# name-contains: fragment nazwy (bez kolorow, wielkosc liter nie ma znaczenia). Puste = tylko material.
+# custom-model-data: 0 = ignoruj.
+dragon-shard:
+  material: AMETHYST_SHARD
+  name-contains: "Smoczy Odłamek"
+  custom-model-data: 0
+  # Tak wyglada item tworzony komenda /szamanadmin odlamki give
+  display-name: "&5Smoczy Odłamek"
+  lore:
+    - ""
+    - "&8× &7Waluta używana w menu &5Szamana&7."
+
+# ---------- Koszty ----------
+costs:
+  turbo-drop: 5     # losowanie perku klanowego (Turbo Drop)
+  stone-roll: 10    # jedno losowanie kamienia
+
+# ---------- Perk klanowy: TURBO DROP ----------
+# Wylosowany mnoznik to DODATKOWY zarobek: x0.50 = +50% do ceny bloku.
+# Bonusy czlonkow klanu SUMUJA sie (twoj + wszystkich pozostalych czlonkow).
+turbo-drop:
+  # Szanse (wagi) na kazdy mnoznik. Klucz = mnoznik, wartosc = waga.
+  chances:
+    "0.25": 40
+    "0.50": 30
+    "0.75": 15
+    "1.0": 10
+    "2.0": 5
+  # BEST    - nowy wynik zostaje tylko jesli jest lepszy od obecnego
+  # REPLACE - nowy wynik zawsze zastepuje stary
+  # ADD     - mnoznik dodaje sie do obecnego
+  reroll-mode: BEST
+  # Maksymalny laczny bonus (twoj + klanowy). 0 = bez limitu.
+  max-total: 0
+  # Skad brac ceny blokow:
+  #   AUTO    - najpierw lista "prices" nizej, potem ceny z pluginu 777-Economy
+  #   CONFIG  - tylko lista "prices" nizej
+  #   ECONOMY - tylko ceny z 777-Economy
+  price-source: AUTO
+  # Ceny wlasne (zarobek za 1 zniszczony blok). Tutaj ustawiasz ile ma sie zarabiac z jakiego drewna.
+  # Mozna tez ustawiac komenda: /szamanadmin drewno set <MATERIAL> <kwota>
+  prices:
+    OAK_LOG: 1.0
+    SPRUCE_LOG: 1.0
+    BIRCH_LOG: 1.0
+    JUNGLE_LOG: 1.5
+    ACACIA_LOG: 1.5
+    DARK_OAK_LOG: 2.0
+    MANGROVE_LOG: 2.0
+    CHERRY_LOG: 2.5
+    CRIMSON_STEM: 3.0
+    WARPED_STEM: 3.0
+  # Czy liczyc bloki, ktorych zniszczenie zostalo anulowane przez inny plugin (zwykle: false)
+  count-cancelled: false
+  # Czy pokazywac na actionbarze ile bonusu wpadlo
+  actionbar: false
+
+# ---------- Kamienie ----------
+# Szansa wylosowania kazdego rodzaju kamienia (wagi)
+stones:
+  weights:
+    strength: 20
+    resistance: 20
+    dexterity: 20
+    intelligence: 20
+    magic: 20
+  # Wyglad kamieni (item w ekwipunku). custom-model-data 0 = brak.
+  strength:     { material: RED_DYE,    custom-model-data: 0 }
+  resistance:   { material: BLUE_DYE,   custom-model-data: 0 }
+  dexterity:    { material: YELLOW_DYE, custom-model-data: 0 }
+  intelligence: { material: LIME_DYE,   custom-model-data: 0 }
+  magic:        { material: PURPLE_DYE, custom-model-data: 0 }
+  name: "%color%Kamień %category%"
+  lore:
+    - ""
+    - "&8× &7Kamień pozwala wylosować jeden"
+    - "&8× &7perk z kategorii %color%%category%&7."
+    - ""
+    - "&aKliknij &fPPM &aaby użyć!"
+
+# ---------- Perki z kamieni ----------
+# Kazde uzycie kamienia losuje jeden perk z kategorii i DODAJE do niego bonus (min-max %),
+# az do limitu cap. Nadpisz dla pojedynczego perku np.:  perks.lifesteal.max: 6
+# Id perkow: extra_hit, increased_damage, lifesteal, resistance, life_block, hit_block,
+#            entangle, endurance, highlight, firework_block, lucky, block_break_block,
+#            second_life, reflect, event_block
+perks:
+  default:
+    min: 3.0
+    max: 10.0
+    cap: 70.0
+  # Przyklady nadpisan:
+  second_life:
+    cap: 40.0
+  hit_block:
+    cap: 40.0
+  increased_damage:
+    min: 1.0
+    max: 5.0
+    cap: 30.0
+  resistance:
+    min: 1.0
+    max: 5.0
+    cap: 40.0
+  reflect:
+    min: 1.0
+    max: 5.0
+    cap: 40.0
+
+# ---------- Dzialanie perkow ----------
+effects:
+  # Perki bojowe dzialaja tylko przeciwko graczom (true) czy tez mobom (false)
+  players-only: true
+  extra-hit-multiplier: 2.0        # Extra Hit: mnoznik obrazen przy procu
+  lifesteal-heal: 2.0              # Lifesteal: ile HP (2.0 = 1 serce) leczy przy procu
+  heal-block-seconds: 5            # Blokada Zycia
+  entangle-seconds: 3              # Spetanie
+  entangle-slow-level: 3           # poziom spowolnienia (1-5)
+  glow-seconds: 6                  # Podswietlenie
+  firework-block-seconds: 6        # Blokada Fajerwerki
+  block-break-block-seconds: 6     # Blokada Niszczenia Blokow
+  event-block-seconds: 6           # Blokada Eventowki
+  second-life:
+    health: 6.0
+    cooldown-seconds: 180
+    resistance-seconds: 4
+  # Szczesciarz: dodatkowy lup przy kopaniu rud
+  lucky:
+    extra-drop-multiplier: 1       # ile razy dodatkowo dropnac
+    # lista materialow; puste = kazda ruda (nazwa konczy sie na _ORE + ANCIENT_DEBRIS)
+    materials: []
+  # Eventowka - item, ktorego zablokowanie dotyczy perk "Blokady Eventowki"
+  eventowka:
+    name-contains: "Eventówka"
+    materials: []                  # opcjonalnie lista materialow, np. [FIREWORK_STAR]
+
+# ---------- Wyglad menu ----------
+gui:
+  main:
+    title: "&5&lSZAMAN"
+    turbo:   { material: EMERALD,         custom-model-data: 0 }
+    perks:   { material: ENCHANTED_BOOK,  custom-model-data: 0 }
+    stone:   { material: AMETHYST_SHARD,  custom-model-data: 0 }
+    # opis dzialania perku klanowego (3. linijka mozesz zmienic na "kopania &6drewna")
+    turbo-description:
+      - "&8× &bMoc tego &dperku &fsprawia,"
+      - "&8× &fże zwiększasz &azarobek&f podczas"
+      - "&8× &fkopania &6generatorów"
+  perks:
+    title: "&a&lTWOJE PERKI"
+    help: { material: PAPER, custom-model-data: 0 }
+
+# ---------- Wiadomosci ----------
+messages:
+  prefix: "&8» "
+  only-player: "&cTa komenda jest tylko dla graczy."
+  no-permission: "&cNie masz uprawnień."
+  not-enough-shards: "&cPotrzebujesz &fx%cost% &5Smoczy Odłamek&c. Masz: &fx%have%&c."
+  turbo-rolled: "&aWylosowałeś Turbo Drop &fx%rolled%&a. Twój bonus: &fx%personal%&a, klanowy: &fx%clan%&a, łącznie: &fx%total%&a."
+  turbo-not-better: "&eWylosowałeś &fx%rolled%&e, ale masz już lepszy bonus (&fx%personal%&e). Zostaje poprzedni."
+  stone-rolled: "&aWylosowałeś: %list%"
+  stone-no-room: "&7Część kamieni wypadła Ci pod nogi (pełny ekwipunek)."
+  stone-maxed: "&cWszystkie perki z kategorii %color%%category% &cmają już maksymalny bonus."
+  perk-rolled: "&aWylosowałeś perk %color%%perk% &a(&f+%added%%&a). Twój bonus: &f%value%%&7/&f%cap%%&a."
+  animating: "&cPoczekaj na zakończenie losowania."
+  hit-blocked: "&8× &bZablokowałeś uderzenie!"
+  hit-blocked-attacker: "&8× &cTwoje uderzenie zostało zablokowane!"
+  heal-blocked: "&8× &cTwoje leczenie zostało zablokowane na %seconds%s!"
+  firework-blocked: "&8× &cTwoje fajerwerki zostały zablokowane na %seconds%s!"
+  break-blocked: "&8× &cNie możesz niszczyć bloków przez %seconds%s!"
+  event-blocked: "&8× &cTwoja eventówka została zablokowana na %seconds%s!"
+  still-blocked: "&8× &cTa akcja jest tymczasowo zablokowana."
+  second-life: "&8× &5Drugie Życie &furatowało Cię przed śmiercią!"
+  extra-hit: "&8× &cExtra Hit!"
+  lifesteal: "&8× &cLifesteal! &7+%hp% HP"
+  lucky: "&8× &aSzczęściarz! &7Dodatkowy łup!"
+  lucky-money: "&8× &aSzczęściarz! &7+%money%$"
+  turbo-pay: "&8× &aTurbo Drop &7+&a%money%$ &8(&fx%total%&8)"
+  admin-usage: "&cUżycie: &f%usage%"
+  player-not-found: "&cNie znaleziono gracza."
+  reloaded: "&aKonfiguracja przeładowana."

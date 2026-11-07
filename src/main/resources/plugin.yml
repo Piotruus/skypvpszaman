@@ -1,0 +1,19 @@
+name: Szaman
+version: '${project.version}'
+main: pl.szaman.SzamanPlugin
+api-version: '1.18'
+description: Szaman - perki klanowe (Turbo Drop) oraz kamienie i perki graczy
+softdepend: [Vault, 777-Clans, 777-Economy]
+commands:
+  szaman:
+    description: Otwiera menu Szamana
+    permission: szaman.use
+  szamanadmin:
+    description: Komendy administracyjne Szamana
+    aliases: [szadmin, sza]
+    permission: szaman.admin
+permissions:
+  szaman.use:
+    default: true
+  szaman.admin:
+    default: op
